@@ -47,30 +47,31 @@ public class MainActivityTest {
     String textInTab2 = "Page: 2";
 
     @Test
-    public void mainActivityTest() {
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.section_label), withText(textInTab1),
-                        withParent(allOf(withId(R.id.constraintLayout),
-                                withParent(withId(R.id.view_pager))))));
-        textView.check(matches(isDisplayed()));
-        textView.check(matches(withText(textInTab1)));
+    public void testTabContent() {
+        checkTabContent(textInTab1);
+        switchTab(nameTab2);
+        checkTabContent(textInTab2);
+    }
 
-        ViewInteraction tabView2 = onView(
-                allOf(withContentDescription(nameTab2),
+    private void switchTab(String tabName) {
+        ViewInteraction tabView = onView(
+                allOf(withContentDescription(tabName),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.tabs),
                                         0),
                                 1)));
-        tabView2.check(matches(isDisplayed()));
-        tabView2.perform(click());
+        tabView.check(matches(isDisplayed()));
+        tabView.perform(click());
+    }
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.section_label), withText(textInTab2),
+    private void checkTabContent(String expectedText) {
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.section_label), withText(expectedText),
                         withParent(allOf(withId(R.id.constraintLayout),
                                 withParent(withId(R.id.view_pager))))));
-        textView2.check(matches(isDisplayed()));
-        textView2.check(matches(withText(textInTab2)));
+        textView.check(matches(isDisplayed()));
+        textView.check(matches(withText(expectedText)));
     }
 
     private static Matcher<View> childAtPosition(
